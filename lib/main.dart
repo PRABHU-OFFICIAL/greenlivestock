@@ -1,4 +1,9 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:greenlivestock/homePage.dart';
+import 'package:greenlivestock/idealsPage.dart';
+import 'package:greenlivestock/trackerPage.dart';
+import 'drawer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,69 +22,72 @@ class _MyAppState extends State<MyApp> {
   static int value = 0;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Green Live Stock'),
-          centerTitle: true,
-          backgroundColor: Colors.black,
-          iconTheme: const IconThemeData(color: Colors.white),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: const <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                ),
-                child: Text(
-                  'Green Live Stock',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home'),
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
+          appBar: AppBar(
+            title: DateTime.now().hour < 12
+                ? const Text('Good Morning')
+                : DateTime.now().hour < 17
+                    ? const Text('Good Afternoon')
+                    : const Text('Good Evening'),
+            centerTitle: true,
+            elevation: 0,
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notifications),
               ),
             ],
+            backgroundColor: Colors.black,
+            iconTheme: const IconThemeData(color: Colors.white),
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.tips_and_updates),
-              label: 'Settings',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.art_track),
-              label: 'Settings',
-            ),
-          ],
-          onTap: (int index) {
-            setState(() {
-              value = index;
-            });
-          },
-          currentIndex: value,
-          selectedIconTheme: const IconThemeData(color: Colors.red),
-        )
-      ),
+          body: value == 0
+              ? const Center(
+                  child: HomePage(),
+                )
+              : value == 1
+                  ? const Center(
+                      child: IdealsPage(),
+                    )
+                  : const Center(
+                      child: TrackerPage(),
+                    ),
+          drawer: const MyDrawer(),
+          bottomNavigationBar: BottomNavigationBar(
+            unselectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.bold),
+            selectedItemColor: Colors.red,
+            unselectedItemColor: Colors.black,
+            selectedLabelStyle: const TextStyle(
+                fontWeight: FontWeight.bold),
+            currentIndex: value,
+            onTap: (int index) {
+              setState(() {
+                value = index;
+              });
+            },
+            selectedIconTheme: const IconThemeData(color: Colors.red),
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.tips_and_updates),
+                label: 'Ideals',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.art_track),
+                label: 'Tracker',
+              ),
+            ],
+          )),
     );
   }
 }
