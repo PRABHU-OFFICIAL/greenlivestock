@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:contactus/contactus.dart';
 import 'package:flutter/material.dart';
 import 'package:greenlivestock/lar.dart';
 import 'package:just_audio/just_audio.dart';
@@ -12,11 +14,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool isPlaying = false;
+  bool isLiked = false;
 
-  final AudioPlayer player = AudioPlayer();
-  play() async {
-    await player.setUrl("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-    player.play();
+  void playAudio(String title) async {
+    await _audioPlayer.setUrl(title);
+    await _audioPlayer.play();
+  }
+
+  void pauseAudio() async {
+    await _audioPlayer.pause();
   }
 
   @override
@@ -149,8 +157,8 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
                       ),
-                    textAlign: TextAlign.center),
-                  ),
+                      textAlign: TextAlign.center),
+                ),
                 const SizedBox(height: 20),
                 const Image(image: AssetImage("assets/image2.png"), height: 80),
                 const SizedBox(height: 10),
@@ -164,13 +172,72 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 10),
                 const Image(image: AssetImage("assets/image7.png"), height: 80),
                 const SizedBox(height: 20),
-                const Text("Podcasts",
+                const SizedBox(height: 20),
+                const Text("Know about Us",
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
                     )),
                 const SizedBox(height: 10),
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: 200,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 2),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 500),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      pauseAutoPlayOnTouch: true,
+                      aspectRatio: 2.0,
+                      enlargeCenterPage: true,
+                    ),
+                    items: const [
+                      "assets/carousel1.png",
+                      "assets/carousel2.png",
+                      "assets/carousel3.png",
+                    ].map((i) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: Image.asset(i));
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text("Contact Us",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    )),
+                const SizedBox(height: 10),
+                ContactUs(
+                  logo: const NetworkImage(
+                      'https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,h_250,q_auto:good,w_250/v1/gcs/platform-data-dsc/events/WhatsApp%20Image%202022-09-13%20at%2020.16.37_kuxZo9x.jpeg'),
+                  email: 'lituplayer@gmail.com',
+                  companyName: 'Prabhu Prasad Penthoi',
+                  phoneNumber: '+918117017978',
+                  dividerThickness: 2,
+                  website:
+                      'https://prabhu-official.github.io/myportfoliowebsite/',
+                  githubUserName: 'PRABHU-OFFICIAL',
+                  linkedinURL:
+                      'https://www.linkedin.com/in/prabhu-prasad-penthoi-73b870189/',
+                  tagLine: 'Flutter Developer',
+                  twitterHandle: 'AbhishekDoshi26',
+                  textColor: Colors.white,
+                  cardColor: Colors.black,
+                  companyColor: Colors.red,
+                  taglineColor: Colors.blue,
+                ),
               ]),
             ),
           ),

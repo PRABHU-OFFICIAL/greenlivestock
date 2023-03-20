@@ -41,6 +41,12 @@ dependencies:
   shimmer: ^2.0.0
   youtube_player_flutter: ^8.1.2
   just_audio: ^0.9.31
+  audioplayers: ^3.0.1
+  video_player: ^2.6.0
+  carousel_slider: ^4.2.1
+  syncfusion_flutter_pdfviewer: ^20.4.54
+  webview_flutter: ^4.0.7
+  contactus: ^1.2.3
 
 dev_dependencies:
   flutter_test:
