@@ -47,6 +47,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^20.4.54
   webview_flutter: ^4.0.7
   contactus: ^1.2.3
+  flip_card: ^0.7.0
 
 dev_dependencies:
   flutter_test:
