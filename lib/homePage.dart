@@ -8,7 +8,6 @@ import 'package:greenlivestock/ghge.dart';
 import 'package:greenlivestock/lar.dart';
 import 'package:greenlivestock/soilHealth.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -145,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>  const EmissionData()));
+                        builder: (context) =>  const EmissionDataScreen()));
                   },
                 ),
                 const Text(

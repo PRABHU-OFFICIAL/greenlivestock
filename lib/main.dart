@@ -54,8 +54,8 @@ class _MyAppState extends State<MyApp> {
                   ? const Center(
                       child: IdealsPage(),
                     )
-                  : const Center(
-                      child: TrackerPage(),
+                  :  Center(
+                      child: TrackingPage(),
                     ),
           drawer: const MyDrawer(),
           bottomNavigationBar: BottomNavigationBar(
