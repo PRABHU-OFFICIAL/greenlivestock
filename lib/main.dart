@@ -54,8 +54,8 @@ class _MyAppState extends State<MyApp> {
                   ? const Center(
                       child: IdealsPage(),
                     )
-                  :  Center(
-                      child: TrackingPage(),
+                  : Center(
+                      child: LiveGraphScreen(),
                     ),
           drawer: const MyDrawer(),
           bottomNavigationBar: BottomNavigationBar(

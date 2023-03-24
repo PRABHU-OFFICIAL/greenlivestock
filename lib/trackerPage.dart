@@ -1,125 +1,126 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:math';
 
-class TrackingPage extends StatefulWidget {
-  const TrackingPage({super.key});
+import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
+
+class LiveGraphScreen extends StatefulWidget {
+  const LiveGraphScreen({super.key});
 
   @override
-  _TrackingPageState createState() => _TrackingPageState();
+  _LiveGraphScreenState createState() => _LiveGraphScreenState();
 }
 
-class _TrackingPageState extends State<TrackingPage> {
+class _LiveGraphScreenState extends State<LiveGraphScreen> {
+  late List<charts.Series<LiveChartData, int>> _seriesList;
+  late Timer _timer;
+  List<LiveChartData> _dataList = [];
+  int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupGraphData();
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      _updateGraphData();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _setupGraphData() {
+    _dataList = List.generate(20, (index) => LiveChartData(index, 0));
+    _seriesList = [
+      charts.Series<LiveChartData, int>(
+        id: 'Live Data',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (LiveChartData data, _) => data.index,
+        measureFn: (LiveChartData data, _) => data.value,
+        data: _dataList,
+      ),
+    ];
+  }
+
+  void _updateGraphData() {
+    setState(() {
+      final random = Random();
+      final index = random.nextInt(_dataList.length);
+      final value = random.nextDouble() * 100;
+      _dataList[index] = LiveChartData(index, value);
+      _counter++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sustainable Livestock Farming Tracking'),
-      ),
+      backgroundColor: Colors.white,
       body: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Livestock Production',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+            Expanded(
+              child: charts.LineChart(
+                _seriesList,
+                animate: false,
+                domainAxis: charts.NumericAxisSpec(
+                  tickProviderSpec: charts.StaticNumericTickProviderSpec(
+                    <charts.TickSpec<num>>[
+                      charts.TickSpec<num>(0, label: ''),
+                      charts.TickSpec<num>(5, label: '5s'),
+                      charts.TickSpec<num>(10, label: '10s'),
+                      charts.TickSpec<num>(15, label: '15s'),
+                      charts.TickSpec<num>(20, label: '20s'),
+                    ],
+                  ),
+                ),
+                behaviors: [
+                  charts.LinePointHighlighter(
+                    symbolRenderer: CustomCircleSymbolRenderer(),
+                    showHorizontalFollowLine:
+                        charts.LinePointHighlighterFollowLineType.nearest,
+                    showVerticalFollowLine:
+                        charts.LinePointHighlighterFollowLineType.none,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Number of Livestock:',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  '1000',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Average Weight:',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  '500 lbs',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32.0),
-            const Text(
-              'Environmental Impact',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Carbon Footprint:',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  '1000 tons CO2',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Water Usage:',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  '5000 gallons',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            SizedBox(height: 32.0),
-            const Text(
-              'Animal Welfare',
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Animal Health Score:',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  '90%',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
-            ),
-            SizedBox(height: 16.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  'Mortality Rate:',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                Text(
-                  '2%',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-              ],
+            const SizedBox(height: 16),
+            Text(
+              'Stock Counters: $_counter',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class LiveChartData {
+  final int index;
+  final double value;
+
+  LiveChartData(this.index, this.value);
+}
+
+class CustomCircleSymbolRenderer extends charts.CircleSymbolRenderer {
+  void painter(charts.ChartCanvas canvas, Rectangle<num> bounds,
+      {required List<int> dashPattern,
+      required charts.Color fillColor,
+      required charts.FillPatternType fillPattern,
+      required charts.Color strokeColor,
+      required double strokeWidthPx}) {
+    super.paint(canvas, bounds,
+        dashPattern: dashPattern,
+        fillColor: charts.MaterialPalette.white,
+        fillPattern: fillPattern,
+        strokeColor: strokeColor,
+        strokeWidthPx: strokeWidthPx);
   }
 }
