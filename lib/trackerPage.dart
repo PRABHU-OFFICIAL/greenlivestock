@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:greenlivestock/models/animalePie.dart';
+import 'package:greenlivestock/models/historicalPrices.dart';
 
 class LiveGraphScreen extends StatefulWidget {
   const LiveGraphScreen({super.key});
@@ -60,42 +61,86 @@ class _LiveGraphScreenState extends State<LiveGraphScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: charts.LineChart(
-                _seriesList,
-                animate: false,
-                domainAxis: charts.NumericAxisSpec(
-                  tickProviderSpec: charts.StaticNumericTickProviderSpec(
-                    <charts.TickSpec<num>>[
-                      charts.TickSpec<num>(0, label: ''),
-                      charts.TickSpec<num>(5, label: '5s'),
-                      charts.TickSpec<num>(10, label: '10s'),
-                      charts.TickSpec<num>(15, label: '15s'),
-                      charts.TickSpec<num>(20, label: '20s'),
-                    ],
+        margin: const EdgeInsets.all(16),
+        height: MediaQuery.of(context).size.height,
+        child: LayoutBuilder(
+          builder: (context, viewportConstraints) => SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: viewportConstraints.maxWidth,
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 300,
+                    child: charts.LineChart(
+                      _seriesList,
+                      animate: true,
+                      domainAxis: charts.NumericAxisSpec(
+                        tickProviderSpec: charts.StaticNumericTickProviderSpec(
+                          <charts.TickSpec<num>>[
+                            charts.TickSpec<num>(0, label: ''),
+                            charts.TickSpec<num>(5, label: '5s'),
+                            charts.TickSpec<num>(10, label: '10s'),
+                            charts.TickSpec<num>(15, label: '15s'),
+                            charts.TickSpec<num>(20, label: '20s'),
+                          ],
+                        ),
+                      ),
+                      behaviors: [
+                        charts.LinePointHighlighter(
+                          symbolRenderer: CustomCircleSymbolRenderer(),
+                          showHorizontalFollowLine:
+                              charts.LinePointHighlighterFollowLineType.nearest,
+                          showVerticalFollowLine:
+                              charts.LinePointHighlighterFollowLineType.none,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                behaviors: [
-                  charts.LinePointHighlighter(
-                    symbolRenderer: CustomCircleSymbolRenderer(),
-                    showHorizontalFollowLine:
-                        charts.LinePointHighlighterFollowLineType.nearest,
-                    showVerticalFollowLine:
-                        charts.LinePointHighlighterFollowLineType.none,
+                  const SizedBox(height: 16),
+                  Text(
+                    'Stock Counters: $_counter',
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                    ),
+                    onPressed: () => _updateGraphData(),
+                    child: const Text('Update Data'),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                    ),
+                    onPressed: () => _setupGraphData(),
+                    child: const Text('Reset Data'),
+                  ),
+                  const SizedBox(height: 16),
+                  const SizedBox(
+                    height: 350,
+                    child: HistoricalPriceGraphScreen(),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Past Animal Pie Chart',
+                    style: TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+                  const SizedBox(
+                    height: 350,
+                    child: AnimalPieGraph(),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Stock Counters: $_counter',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ],
+          ),
         ),
       ),
     );

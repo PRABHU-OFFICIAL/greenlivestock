@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
                   ? const Center(
                       child: IdealsPage(),
                     )
-                  : Center(
+                  : const Center(
                       child: LiveGraphScreen(),
                     ),
           drawer: const MyDrawer(),
