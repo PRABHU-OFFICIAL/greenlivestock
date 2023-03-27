@@ -72,7 +72,7 @@ class _LiveGraphScreenState extends State<LiveGraphScreen> {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   SizedBox(
                     height: 300,
                     child: charts.LineChart(

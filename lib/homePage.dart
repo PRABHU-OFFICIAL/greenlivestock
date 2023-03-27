@@ -32,6 +32,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isLoading = false;
+    setLoadedElements() async {
+      if (isLoading == false) {
+        await Future.delayed(const Duration(seconds: 2));
+        setState(() {
+          isLoading = true;
+        });
+      }
+    }
 
     return Scaffold(
       body: WillPopScope(
@@ -42,7 +51,7 @@ class _HomePageState extends State<HomePage> {
               constraints: BoxConstraints(
                 minHeight: constraints.maxHeight,
               ),
-              child: Column(children: [
+              child: Column(children: <Widget>[
                 const SizedBox(height: 20),
                 InkWell(
                   child: Card(
@@ -144,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>  const EmissionDataScreen()));
+                        builder: (context) => const EmissionDataScreen()));
                   },
                 ),
                 const Text(

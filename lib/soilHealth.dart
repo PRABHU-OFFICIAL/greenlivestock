@@ -537,7 +537,7 @@ class SHBD extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
-                      children:  [
+                      children:  <Widget>[
                         const SizedBox(
                           height: 16,
                         ),

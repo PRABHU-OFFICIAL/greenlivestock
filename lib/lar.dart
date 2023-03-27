@@ -13,7 +13,6 @@ class LAR extends StatefulWidget {
 
 class _LARState extends State<LAR> {
   final AudioPlayer _audioPlayer = AudioPlayer();
-  final WebViewController _webViewController = WebViewController();
 
   void playAudio(String title) async {
     await _audioPlayer.setUrl(title);
@@ -30,7 +29,7 @@ class _LARState extends State<LAR> {
     List videosList = Videos.getData;
     List podcastsList = Podcasts.getData;
     List tutorialsList = Tutorials.getData;
-    List GlossaryList = Glossary.getData;
+    List glossaryList = Glossary.getData;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +48,7 @@ class _LARState extends State<LAR> {
           builder: (context, constraints) => ConstrainedBox(
               constraints: BoxConstraints(minWidth: constraints.maxWidth),
               child: ListView(
-                children: [
+                children: <Widget>[
                   const SizedBox(height: 10),
                   const Text("Articles",
                       style: TextStyle(
@@ -212,43 +211,46 @@ class _LARState extends State<LAR> {
                   ListView(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    children: GlossaryList.map((glossary) => Card(
-                          margin: const EdgeInsets.all(10),
-                          elevation: 5,
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 25,
-                                child: Icon(
-                                  Icons.keyboard_hide,
-                                  color: Colors.red,
-                                  size: 30,
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width - 50,
-                                padding: const EdgeInsets.all(10),
-                                child: FlipCard(
-                                    front: Text(
-                                      glossary['front'],
-                                      style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                      textAlign: TextAlign.center,
+                    children: glossaryList
+                        .map((glossary) => Card(
+                              margin: const EdgeInsets.all(10),
+                              elevation: 5,
+                              child: Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 25,
+                                    child: Icon(
+                                      Icons.keyboard_hide,
+                                      color: Colors.red,
+                                      size: 30,
                                     ),
-                                    back: Text(
-                                      glossary['back'],
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                      textAlign: TextAlign.center,
-                                    )),
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 50,
+                                    padding: const EdgeInsets.all(10),
+                                    child: FlipCard(
+                                        front: Text(
+                                          glossary['front'],
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        back: Text(
+                                          glossary['back'],
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey),
+                                          textAlign: TextAlign.center,
+                                        )),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )).toList(),
+                            ))
+                        .toList(),
                   ),
                 ],
               )),
@@ -538,8 +540,7 @@ class Glossary {
     },
     {
       "front": "Animal husbandry",
-      "back":
-          "The care, management, and breeding of livestock animals"
+      "back": "The care, management, and breeding of livestock animals"
     },
     {
       "front": "Antibiotic",
@@ -549,47 +550,46 @@ class Glossary {
     {
       "front": "Hormones",
       "back":
-      "Chemicals that are used to promote growth and production in livestock animals.."
+          "Chemicals that are used to promote growth and production in livestock animals.."
     },
     {
       "front": "Antibiotic",
       "back":
-      "A medicine that is used to treat or prevent bacterial infections in livestock."
+          "A medicine that is used to treat or prevent bacterial infections in livestock."
     },
     {
       "front": "Animal welfare",
       "back":
-      "The ethical and humane treatment of animals in livestock farming, including their health, nutrition, and living conditions."
+          "The ethical and humane treatment of animals in livestock farming, including their health, nutrition, and living conditions."
     },
     {
       "front": "Sustainable agriculture",
       "back":
-      "The practice of using farming methods that are environmentally sound, socially responsible, and economically viable."
+          "The practice of using farming methods that are environmentally sound, socially responsible, and economically viable."
     },
     {
       "front": "Manure",
-      "back":
-      "Animal waste that is used as fertilizer in crop production."
+      "back": "Animal waste that is used as fertilizer in crop production."
     },
     {
       "front": "Meat processing",
       "back":
-      "The transformation of livestock animals into meat products for human consumption, including slaughter, processing, and packaging.."
+          "The transformation of livestock animals into meat products for human consumption, including slaughter, processing, and packaging.."
     },
     {
       "front": "Organic farming",
       "back":
-      "A  method of farming that avoids the use of synthetic fertilizers, pesticides, and other chemicals, and relies on natural methods for pest control and soil fertility.."
+          "A  method of farming that avoids the use of synthetic fertilizers, pesticides, and other chemicals, and relies on natural methods for pest control and soil fertility.."
     },
     {
       "front": "Rotation grazing",
       "back":
-      "The practice of moving livestock between different grazing areas in a pasture or range, in order to promote healthy vegetation growth and reduce soil erosion."
+          "The practice of moving livestock between different grazing areas in a pasture or range, in order to promote healthy vegetation growth and reduce soil erosion."
     },
     {
       "front": "Vaccination",
       "back":
-      "The process of giving livestock animals vaccines to protect them from infectious diseases."
+          "The process of giving livestock animals vaccines to protect them from infectious diseases."
     }
   ];
 }
