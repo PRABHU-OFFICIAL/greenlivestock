@@ -42,6 +42,9 @@ Overall, sustainable livestock farming aims to balance economic viability with e
 * Flutter UI KITS GOOGLE
 
 
+## Prototype Link :- https://drive.google.com/file/d/1FJ7UvOgsHNJVL7KBGbL6ToP-md4xdXbH/view?usp=share_link
+
+
 ## Some screenshots of the GREENLIVESTOCKAPP
 
 ![1680161157918](https://user-images.githubusercontent.com/72146816/228766825-718739e8-8808-4be6-ae0f-fa5a849d06f0.jpg)
